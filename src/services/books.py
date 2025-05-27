@@ -1,11 +1,8 @@
-from typing import List, Optional, Any, Dict, Union
-from sqlalchemy.orm import Session
-
+from typing import List, Optional
 from ..repositories.books import BookRepository
 from ..models.books import Book
 from ..api.schemas.books import BookCreate, BookUpdate
 from .base import BaseService
-
 
 class BookService(BaseService[Book, BookCreate, BookUpdate]):
     """
@@ -17,27 +14,26 @@ class BookService(BaseService[Book, BookCreate, BookUpdate]):
 
     def get_by_isbn(self, *, isbn: str) -> Optional[Book]:
         """
-        Récupère un livre par son ISBN.
+        Récupérer un livre par son ISBN.
         """
         return self.repository.get_by_isbn(isbn=isbn)
 
     def get_by_title(self, *, title: str) -> List[Book]:
         """
-        Récupère des livres par leur titre (recherche partielle).
+        Récupérer des livres par leur titre (recherche partielle).
         """
         return self.repository.get_by_title(title=title)
 
     def get_by_author(self, *, author: str) -> List[Book]:
         """
-        Récupère des livres par leur auteur (recherche partielle).
+        Récupérer des livres par leur auteur (recherche partielle).
         """
         return self.repository.get_by_author(author=author)
 
     def create(self, *, obj_in: BookCreate) -> Book:
         """
-        Crée un nouveau livre, en vérifiant que l'ISBN n'est pas déjà utilisé.
+        Créer un nouveau livre, en s'assurant que l'ISBN n'est pas déjà utilisé.
         """
-        # Vérifier si l'ISBN est déjà utilisé
         existing_book = self.get_by_isbn(isbn=obj_in.isbn)
         if existing_book:
             raise ValueError("L'ISBN est déjà utilisé")
@@ -46,7 +42,7 @@ class BookService(BaseService[Book, BookCreate, BookUpdate]):
 
     def update_quantity(self, *, book_id: int, quantity_change: int) -> Book:
         """
-        Met à jour la quantité d'un livre.
+        Mettre à jour la quantité d'un livre.
         """
         book = self.get(id=book_id)
         if not book:

@@ -13,9 +13,7 @@ from .base import BaseService
 
 
 class LoanService(BaseService[Loan, LoanCreate, LoanUpdate]):
-    """
-    Service pour la gestion des emprunts.
-    """
+   
     def __init__(
         self,
         loan_repository: LoanRepository,
